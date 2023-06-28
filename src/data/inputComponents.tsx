@@ -1,6 +1,6 @@
 import { NumberInputComponentProps } from "../components/numberInput/types";
 
-export const inputComponents: NumberInputComponentProps[] = [
+export const inputComponents = [
   {
     title: "Specify the dataset input:",
     type: "number",
