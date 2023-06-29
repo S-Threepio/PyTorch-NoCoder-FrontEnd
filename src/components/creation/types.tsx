@@ -1,7 +1,12 @@
-import React from "react";
+export type CreationComponentProps = {
+  propsData: propsData | null;
+};
 
-function types() {
-  return <div>types</div>;
-}
-
-export default types;
+export type propsData = {
+  selectedModel: string;
+  selectedDataset: string;
+  datasetInput: number;
+  epochs: number;
+  batchSize: number;
+  learningRate: number;
+};

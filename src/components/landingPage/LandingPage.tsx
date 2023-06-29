@@ -1,13 +1,19 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, useState } from "react";
 import logo from "./logo.svg";
-import RadioButtonComponent from "./radioButton";
-import { datasets } from "../data/datasets";
-import { models } from "../data/models";
-import { DropdownComponent } from "./dropdown";
-import { inputComponents } from "../data/inputComponents";
-import { NumberInputComponent } from "./numberInput";
+import RadioButtonComponent from "../radioButton";
+import { datasets } from "../../data/datasets";
+import { models } from "../../data/models";
+import { DropdownComponent } from "../dropdown";
+import { inputComponents } from "../../data/inputComponents";
+import { NumberInputComponent } from "../numberInput";
+import { useNavigate } from "react-router-dom";
+import { CreationComponentProps } from "../creation/types";
+import { LandingPageProps } from "./types";
 
-function LandingPage() {
+export const LandingPage: FunctionComponent<LandingPageProps> = ({
+  handlePropsData,
+}) => {
+  const navigate = useNavigate();
   // State variables to hold the selected/entered values
   const [selectedModel, setSelectedModel] = useState<string | null>(
     models[0].value
@@ -38,12 +44,24 @@ function LandingPage() {
   const handleButtonClick = () => {
     // Access the selected/entered values here
     const [dataset, epochs, batch_size, learning_rate] = inputValues;
+
+    const propsData = {
+      selectedModel: selectedModel,
+      selectedDataset: selectedDataset,
+      datasetInput: dataset,
+      epochs: epochs,
+      batchSize: batch_size,
+      learningRate: learning_rate,
+    };
+
     console.log("Selected Model:", selectedModel);
     console.log("Selected Dataset:", selectedDataset);
     console.log("Dataset:", dataset);
     console.log("Epochs:", epochs);
     console.log("Batch Size:", batch_size);
     console.log("Learning Rate:", learning_rate);
+    handlePropsData(propsData);
+    navigate("/create");
   };
 
   return (
@@ -80,6 +98,4 @@ function LandingPage() {
       </div>
     </div>
   );
-}
-
-export default LandingPage;
+};
