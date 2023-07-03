@@ -65,8 +65,8 @@ export const LandingPage: FunctionComponent<LandingPageProps> = ({
   };
 
   return (
-    <div className="overflow-auto bg-[#38305c] flex flex-col h-full justify-center items-center text-2xl">
-      <div className="flex flex-col w-1/2 px-10 py-5 mx-auto shadow-2xl bg-white">
+    <div className="overflow-auto bg-[#1B1D2D] text-white flex flex-col h-full justify-center items-center text-2xl">
+      <div className="flex flex-col w-1/2 px-10 py-5 mx-auto shadow-2xl bg-[#23252E]">
         <RadioButtonComponent
           title="Which type of ML model would you like to make?"
           models={models}

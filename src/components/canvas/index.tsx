@@ -1,23 +1,47 @@
-import React, { FC, FunctionComponent } from "react";
+import React, { FC, FunctionComponent, useRef } from "react";
 import { CanvasProps } from "./types";
+import LayerComponent from "../layer";
+import right from "../../imgs/right.png";
+import left from "../../imgs/left.png";
 
 export const CanvasComponent: FunctionComponent<CanvasProps> = ({ layers }) => {
+  const canvasRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = (sign: number) => {
+    if (canvasRef.current) {
+      const scrollAmount = 400 * sign; // Adjust the scroll amount as needed
+      canvasRef.current.scrollBy({
+        left: scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <div className="w-full overflow-x-auto items-center flex flex-1 border-2 pl-10 gap-20 p-4">
-      {layers.map((layer) => (
+    <div className="w-full flex-col flex flex-1">
+      <div className="flex-1  items-center justify-center bg-[#1B1D2D] flex flex-col pl-10 gap-2 p-4">
         <div
-          key={layer.layer_id}
-          className="border-2 font-normal min-w-[300px] h-[300px] border-gray-400 p-4 m-2"
+          ref={canvasRef}
+          className="flex gap-10 overflow-x-auto w-full scrollbar-hide"
         >
-          <div>Layer Type: {layer.layer_type}</div>
-          <div>Layer ID: {layer.layer_id}</div>
-          <div>Layer Name: {layer.layer_name}</div>
-          <div>
-            Params:
-            <pre>{JSON.stringify(layer.params, null, 2)}</pre>
-          </div>
+          {layers.map((layer) => (
+            <LayerComponent {...layer} />
+          ))}
         </div>
-      ))}
+        <div className="flex justify-center gap-2 w-full mt-4">
+          <img
+            src={left}
+            className="h-16 w-16 opacity-60 hover:opacity-100 transition-opacity ease-in-out duration-200 rounded"
+            onClick={() => scrollLeft(-1)}
+          />
+
+          <img
+            src={right}
+            className="h-16 w-16 opacity-60 hover:opacity-100 transition-opacity ease-in-out duration-200 rounded"
+            onClick={() => scrollLeft(1)}
+          />
+        </div>
+      </div>
     </div>
   );
 };

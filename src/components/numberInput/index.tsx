@@ -16,7 +16,7 @@ export const NumberInputComponent: FunctionComponent<
         type={type}
         pattern={pattern}
         inputMode="numeric"
-        className="block w-full border border-gray-300 rounded my-2 p-2"
+        className="block w-full bg-[#23252E] border appearance-none border-gray-300 rounded my-2 p-2"
         onChange={handleInputChange}
       />
     </>

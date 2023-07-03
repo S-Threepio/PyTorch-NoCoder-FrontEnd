@@ -9,7 +9,7 @@ const CreationComponent: FunctionComponent<CreationComponentProps> = ({
   return (
     <div className="flex flex-col items-center h-full text-xl font-semibold">
       <CanvasComponent layers={canvasProps.layers} />
-      <div className="bottombar w-full bg-yellow-500 p-10"></div>
+      {/* <div className="bottombar w-full p-10"></div> */}
     </div>
   );
 };
