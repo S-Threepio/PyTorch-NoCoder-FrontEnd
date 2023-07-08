@@ -1,4 +1,4 @@
-import { NumberInputComponentProps } from "../components/numberInput/types";
+import { NumberInputComponentProps } from "../components/landingPage/numberInput/types";
 
 export const inputComponents = [
   {

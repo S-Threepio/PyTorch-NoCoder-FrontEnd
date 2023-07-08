@@ -1,11 +1,11 @@
 import React, { ChangeEvent, FunctionComponent, useState } from "react";
 import logo from "./logo.svg";
-import RadioButtonComponent from "../radioButton";
+import RadioButtonComponent from "./radioButton";
 import { datasets } from "../../data/datasets";
 import { models } from "../../data/models";
-import { DropdownComponent } from "../dropdown";
+import { DropdownComponent } from "./dropdown";
 import { inputComponents } from "../../data/inputComponents";
-import { NumberInputComponent } from "../numberInput";
+import { NumberInputComponent } from "./numberInput";
 import { useNavigate } from "react-router-dom";
 import { CreationComponentProps } from "../creation/types";
 import { LandingPageProps } from "./types";
@@ -15,13 +15,11 @@ export const LandingPage: FunctionComponent<LandingPageProps> = ({
 }) => {
   const navigate = useNavigate();
   // State variables to hold the selected/entered values
-  const [selectedModel, setSelectedModel] = useState<string | null>(
-    models[0].value
-  ); // Set the first model as the default
-  const [selectedDataset, setSelectedDataset] = useState<string | null>(
+  const [selectedModel, setSelectedModel] = useState<string>(models[0].value); // Set the first model as the default
+  const [selectedDataset, setSelectedDataset] = useState<string>(
     datasets[0].value
   ); // Set the first dataset as the default
-  const [inputValues, setInputValues] = useState<String[]>([]);
+  const [inputValues, setInputValues] = useState<number[]>([]);
 
   // Callback functions to update the state variables
   const handleModelChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +30,7 @@ export const LandingPage: FunctionComponent<LandingPageProps> = ({
     setSelectedDataset(event.target.value);
   };
 
-  const handleInputChange = (index: number, value: String) => {
+  const handleInputChange = (index: number, value: number) => {
     setInputValues((prevValues) => {
       const updatedValues = [...prevValues];
       updatedValues[index] = value;
@@ -45,21 +43,18 @@ export const LandingPage: FunctionComponent<LandingPageProps> = ({
     // Access the selected/entered values here
     const [dataset, epochs, batch_size, learning_rate] = inputValues;
 
-    const propsData = {
-      selectedModel: selectedModel,
-      selectedDataset: selectedDataset,
-      datasetInput: dataset,
+    const propsData: CreationComponentProps = {
       epochs: epochs,
       batchSize: batch_size,
+      preloadedDataset: true,
       learningRate: learning_rate,
+      trainingSplit: 0.7,
+      selectedDataset: selectedDataset,
+      optimizer: "",
+      lossFunction: "",
+      selectedModel: selectedModel,
+      datasetInput: dataset,
     };
-
-    console.log("Selected Model:", selectedModel);
-    console.log("Selected Dataset:", selectedDataset);
-    console.log("Dataset:", dataset);
-    console.log("Epochs:", epochs);
-    console.log("Batch Size:", batch_size);
-    console.log("Learning Rate:", learning_rate);
     handlePropsData(propsData);
     navigate("/create");
   };
@@ -85,7 +80,7 @@ export const LandingPage: FunctionComponent<LandingPageProps> = ({
             type={type}
             key={index}
             index={index}
-            onChange={(value) => handleInputChange(index, value)}
+            onChange={(value) => handleInputChange(index, Number(value))}
           />
         ))}
 

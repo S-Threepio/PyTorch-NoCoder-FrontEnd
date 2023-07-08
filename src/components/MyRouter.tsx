@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import CreationComponent from "./creation";
-import { CreationComponentProps, propsData } from "./creation/types";
-import { LandingPage } from "./landingPage/LandingPage";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { CreationComponentProps } from "./creation/types";
+import { LandingPage } from "./landingPage";
+import { CreationComponent } from "./creation";
 
 function MyRouter() {
-  const [propsData, setPropsData] = useState<propsData | null>(null);
+  const [propsData, setPropsData] = useState<CreationComponentProps | null>(
+    null
+  );
 
-  function handlePropsData(propsData: propsData) {
+  function handlePropsData(propsData: CreationComponentProps) {
     setPropsData(propsData);
   }
 
@@ -19,7 +21,9 @@ function MyRouter() {
       />
       <Route
         path="/create"
-        element={<CreationComponent propsData={propsData} />}
+        element={
+          propsData ? <CreationComponent {...propsData} /> : <Navigate to="/" />
+        }
       />
     </Routes>
   );
