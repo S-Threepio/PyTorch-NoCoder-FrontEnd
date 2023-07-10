@@ -1,11 +1,4 @@
-export type Layer = {
-  layer_type: string;
-  layer_id: string;
-  layer_name: string;
-  params: {
-    [key: string]: any;
-  };
-};
+import { Layer } from "./layer/types";
 
 export type CreationComponentProps = {
   selectedModel: string;

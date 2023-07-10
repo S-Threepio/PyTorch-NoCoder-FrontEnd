@@ -1,8 +1,10 @@
 import { FC, FunctionComponent, useRef, useState } from "react";
-import { CreationComponentProps, Layer } from "./types";
+import { Layer } from "./layer/types";
 import LayerComponent from "./layer";
 import right from "../../imgs/right.png";
 import left from "../../imgs/left.png";
+import { CreationComponentProps } from "./types";
+import AddLayerDialog from "./layer/add";
 
 export const CreationComponent: FunctionComponent<CreationComponentProps> = (
   propsData
@@ -12,6 +14,8 @@ export const CreationComponent: FunctionComponent<CreationComponentProps> = (
   const [layers, setlayers] = useState<Layer[] | null>(null);
 
   const [IsBlur, setIsBlur] = useState(false);
+  const [showAddLayerDialog, setShowAddLayerDialog] = useState(false);
+
   const scrollLeft = (sign: number) => {
     if (canvasRef.current) {
       const scrollAmount = 400 * sign; // Adjust the scroll amount as needed
@@ -22,24 +26,31 @@ export const CreationComponent: FunctionComponent<CreationComponentProps> = (
     }
   };
 
-  const addLayer = () => {
-    // Open the dialog box or perform any other action to take input for the new layer
-    // Once you have the input values, create a new layer object and update the layers state
-    const newLayer: Layer = {
-      layer_type: "",
-      layer_id: "",
-      layer_name: "",
-      params: {},
-    };
-    setlayers((prevLayers) => [...(prevLayers || []), newLayer]);
+  const handleAddLayer = (newLayer: Layer) => {
+    setlayers((prevLayers) => {
+      if (prevLayers != null) {
+        newLayer.layer_id = prevLayers[prevLayers.length - 1].layer_id + 1;
+      }
+      console.log(newLayer);
+      return [...(prevLayers || []), newLayer];
+    });
   };
 
+  const handleAddLayerClick = () => {
+    setShowAddLayerDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setShowAddLayerDialog(false);
+  };
   return (
     <div className="w-full flex-col flex flex-1 text-xl">
-      {IsBlur && <div className="absolute h-full w-full blur-5xl z-20" />}
+      {showAddLayerDialog && (
+        <div className="absolute backdrop-blur-sm bg-[#1B1D2D] bg-opacity-40 h-full w-full z-20"></div>
+      )}
 
       <div className="flex-1  items-center justify-center bg-[#1B1D2D] flex flex-col pl-10 gap-2 p-4">
-        {layers != null ? (
+        {layers != null && (
           <div
             ref={canvasRef}
             className="flex gap-10 overflow-x-auto w-full scrollbar-hide"
@@ -48,15 +59,7 @@ export const CreationComponent: FunctionComponent<CreationComponentProps> = (
               <LayerComponent {...layer} key={layer.layer_id} />
             ))}
           </div>
-        ) : (
-          <button
-            className="bg-[#38305c] w-max self-center transition-transform ease-in-out duration-200 font-semibold hover:bg-[#141121] hover:scale-105 text-white py-2 my-4 px-4 rounded"
-            onClick={addLayer}
-          >
-            Add a Layer
-          </button>
         )}
-
         {layers != null && layers.length !== 0 && (
           <div className="flex justify-center gap-2 w-full mt-4">
             <img
@@ -71,6 +74,21 @@ export const CreationComponent: FunctionComponent<CreationComponentProps> = (
               onClick={() => scrollLeft(1)}
             />
           </div>
+        )}
+
+        <button
+          className="bg-[#38305c] w-max self-center transition-transform ease-in-out duration-200 font-semibold hover:bg-[#141121] hover:scale-105 text-white py-2 my-4 px-4 rounded"
+          onClick={handleAddLayerClick}
+        >
+          Add a Layer
+        </button>
+
+        {showAddLayerDialog && (
+          <AddLayerDialog
+            lastLayer={layers != null ? layers[layers.length - 1] : null}
+            onAddLayer={handleAddLayer}
+            onClose={handleCloseDialog}
+          />
         )}
       </div>
     </div>

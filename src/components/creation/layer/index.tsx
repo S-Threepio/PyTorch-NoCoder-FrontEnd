@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Layer } from "../types";
+import { Layer } from "./types";
 
 const LayerComponent: FC<Layer> = (layer) => {
   let backgroundColor = "";
