@@ -14,7 +14,7 @@ const LayerComponent: FC<Layer> = (layer) => {
       break;
     // Add more cases for other layer types
     default:
-      backgroundColor = "bg-gray-500";
+      backgroundColor = "bg-red-500";
   }
 
   return (

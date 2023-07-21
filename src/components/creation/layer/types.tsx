@@ -9,6 +9,7 @@ export type Layer = {
 
 export type AddLayerDialogProps = {
   lastLayer: Layer | null;
+  inputFeatures : Number;
   onAddLayer: (layer: Layer) => void;
   onClose: () => void;
 };

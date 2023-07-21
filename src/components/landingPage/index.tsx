@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FunctionComponent, useState } from "react";
-import logo from "./logo.svg";
 import RadioButtonComponent from "./radioButton";
 import { datasets } from "../../data/datasets";
 import { models } from "../../data/models";

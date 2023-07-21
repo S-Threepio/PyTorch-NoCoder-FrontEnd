@@ -5,15 +5,16 @@ import right from "../../imgs/right.png";
 import left from "../../imgs/left.png";
 import { CreationComponentProps } from "./types";
 import AddLayerDialog from "./layer/add";
+import { useNavigate } from "react-router-dom";
+import { GenerationProps } from "../generation/types";
 
 export const CreationComponent: FunctionComponent<CreationComponentProps> = (
   propsData
 ) => {
   const canvasRef = useRef<HTMLDivElement>(null);
-
+  const navigate = useNavigate();
+  const [generationProps, setGenerationProps] = useState<GenerationProps>();
   const [layers, setlayers] = useState<Layer[] | null>(null);
-
-  const [IsBlur, setIsBlur] = useState(false);
   const [showAddLayerDialog, setShowAddLayerDialog] = useState(false);
 
   const scrollLeft = (sign: number) => {
@@ -40,6 +41,17 @@ export const CreationComponent: FunctionComponent<CreationComponentProps> = (
     setShowAddLayerDialog(true);
   };
 
+  const handleMoveToModelGeneration = () => {
+    const generationProps: GenerationProps = {
+      layers: layers,
+      creationComponentProps: propsData,
+    };
+    setGenerationProps(generationProps);
+    navigate("/generate", {
+      state: generationProps,
+    });
+  };
+
   const handleCloseDialog = () => {
     setShowAddLayerDialog(false);
   };
@@ -60,7 +72,7 @@ export const CreationComponent: FunctionComponent<CreationComponentProps> = (
             ))}
           </div>
         )}
-        {layers != null && layers.length !== 0 && (
+        {layers && (
           <div className="flex justify-center gap-2 w-full mt-4">
             <img
               src={left}
@@ -88,7 +100,17 @@ export const CreationComponent: FunctionComponent<CreationComponentProps> = (
             lastLayer={layers != null ? layers[layers.length - 1] : null}
             onAddLayer={handleAddLayer}
             onClose={handleCloseDialog}
+            inputFeatures={propsData.datasetInput}
           />
+        )}
+
+        {layers && (
+          <button
+            className="bg-[#38305c] w-max self-center transition-transform ease-in-out duration-200 font-semibold hover:bg-[#141121] hover:scale-105 text-white py-2 my-4 px-4 rounded"
+            onClick={handleMoveToModelGeneration}
+          >
+            Proceed To Model Generation
+          </button>
         )}
       </div>
     </div>

@@ -2,21 +2,22 @@ import React, { useState } from "react";
 import { AddLayerDialogProps, Layer } from "./types";
 import { NumberInputComponent } from "../../landingPage/numberInput";
 import Switch from "react-switch";
+import { layerTypes } from "../../../data/layerTypes";
+import { DropdownComponent } from "../dropdown";
 
 const AddLayerDialog: React.FC<AddLayerDialogProps> = ({
   lastLayer,
   onAddLayer,
   onClose,
+  inputFeatures,
 }) => {
-  const [layerType, setLayerType] = useState("");
-  const [layerId, setLayerId] = useState(0);
+  const [layerType, setLayerType] = useState(layerTypes[0].value);
   const [layerName, setLayerName] = useState("");
   const [inFeatures, setInFeatures] = useState(
-    lastLayer ? lastLayer.params.out_features : ""
+    lastLayer ? lastLayer.params.out_features : inputFeatures
   );
   const [outFeatures, setOutFeatures] = useState(0);
   const [bias, setBias] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
 
   const handleSliderChange = (checked: boolean) => {
     setBias(checked);
@@ -41,16 +42,20 @@ const AddLayerDialog: React.FC<AddLayerDialogProps> = ({
   return (
     <div className="absolute flex bg-white p-4 w-1/2 flex-col gap-5 z-50 rounded-lg">
       <div className="grid grid-flow-row grid-cols-2 gap-10 ">
-        <div className="flex flex-col gap-2">
+        <DropdownComponent
+          title={"Layer Type"}
+          datasets={layerTypes}
+          onChange={(e) => setLayerType(e.target.value)}
+        />
+        {/* <div className="flex flex-col gap-2">
           <div>Layer Type</div>
           <input
             type="text"
             placeholder="Layer Type"
             value={layerType}
             className="p-4 border border-gray-300"
-            onChange={(e) => setLayerType(e.target.value)}
           />
-        </div>
+        </div> */}
         <div className="flex flex-col gap-2">
           <div>Layer Name</div>
           <input
@@ -67,12 +72,17 @@ const AddLayerDialog: React.FC<AddLayerDialogProps> = ({
           <input
             type="number"
             placeholder="Specify the in features"
-            readOnly={lastLayer ? true : false}
+            readOnly={true}
+            // {lastLayer ? true : false}
             title="Specify the input features"
             inputMode="numeric"
             value={lastLayer ? lastLayer.params.out_features : inFeatures}
             className={`block w-full  border appearance-none border-gray-300 rounded p-4
-            ${lastLayer ? "bg-gray-400" : ""}`}
+            bg-gray-400
+            ${
+              //lastLayer ? "bg-gray-400" : ""
+              ""
+            }`}
             onChange={(e) => {
               setInFeatures(e.target.value);
             }}
@@ -115,6 +125,7 @@ const AddLayerDialog: React.FC<AddLayerDialogProps> = ({
         >
           Add Layer
         </button>
+        
         <button
           className="bg-[#c93737] w-max self-center transition-transform ease-in-out duration-200 font-semibold hover:bg-[#c41212] hover:scale-105 text-white py-2 my-4 px-4 rounded"
           onClick={onClose}

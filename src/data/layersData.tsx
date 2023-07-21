@@ -1,5 +1,5 @@
-import { CanvasProps } from "../components/creation/types";
-
+// import { CanvasProps } from "../components/creation/types";
+export {};
 // export const canvasProps: CanvasProps = {
 //   layers: [
 //     {

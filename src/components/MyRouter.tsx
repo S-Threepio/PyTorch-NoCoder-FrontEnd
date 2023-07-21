@@ -3,6 +3,8 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { CreationComponentProps } from "./creation/types";
 import { LandingPage } from "./landingPage";
 import { CreationComponent } from "./creation";
+import GenerationComponent from "./generation";
+import { GenerationProps } from "./generation/types";
 
 function MyRouter() {
   const [propsData, setPropsData] = useState<CreationComponentProps | null>(
@@ -25,6 +27,7 @@ function MyRouter() {
           propsData ? <CreationComponent {...propsData} /> : <Navigate to="/" />
         }
       />
+      <Route path="/generate" element={<GenerationComponent />} />
     </Routes>
   );
 }
