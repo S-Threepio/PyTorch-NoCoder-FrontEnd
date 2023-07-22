@@ -26,6 +26,7 @@ const GenerationComponent: FunctionComponent<GenerationProps | null> = () => {
       batch_size: creationComponentProps.batchSize || 7,
       preloaded_dataset: creationComponentProps.preloadedDataset || false,
       learning_rate: creationComponentProps.learningRate || 0.001,
+      //TODO add training split
       training_split: creationComponentProps.trainingSplit || 0.7,
       dataset: {
         id: creationComponentProps.selectedDataset || "FashionMNIST",
@@ -34,12 +35,32 @@ const GenerationComponent: FunctionComponent<GenerationProps | null> = () => {
       loss_function: lossFunction,
     };
 
-    console.log(json);
+    fetch("https://api.example.com/train", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(json),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Handle the API response data here
+        console.log("API response:", data);
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the API call
+        console.error("Error making API call:", error);
+      });
   };
 
   return (
     <div className="flex w-full h-full flex-col items-center justify-center gap-10 bg-[#1B1D2D]">
-      <div className="flex flex-col gap-10 w-2/5 justify-center text-xl bg-white p-5">
+      <div className="flex flex-col gap-10 w-2/5 justify-center text-xl shadow-lg bg-white p-5">
         <DropdownComponent
           title="Select the Optimizer"
           datasets={optimizers}
