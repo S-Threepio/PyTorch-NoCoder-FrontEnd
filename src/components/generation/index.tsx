@@ -3,6 +3,7 @@ import { GenerationProps } from "./types";
 import { useLocation } from "react-router-dom";
 import { optimizers, lossFunctions } from "../../data/generationData";
 import { DropdownComponent } from "../creation/dropdown";
+import { Layer } from "../creation/layer/types";
 
 const GenerationComponent: FunctionComponent<GenerationProps | null> = () => {
   const location = useLocation();
@@ -10,6 +11,15 @@ const GenerationComponent: FunctionComponent<GenerationProps | null> = () => {
 
   const [optimizer, setOptimizer] = useState(optimizers[0].value);
   const [lossFunction, setLossFunction] = useState(lossFunctions[0].value);
+
+  const layerConverter = (layers: Layer[]) => {
+    layers.forEach((layer) => {
+      // If the layer type is "flatten," set params as empty
+      if (layer.layer_type === "Flatten") {
+        layer.params = {};
+      }
+    });
+  };
 
   const handleButtonClick = () => {
     const { creationComponentProps, layers } = propsFromLocation;
@@ -34,28 +44,29 @@ const GenerationComponent: FunctionComponent<GenerationProps | null> = () => {
       optimizer: optimizer,
       loss_function: lossFunction,
     };
+    console.log(json);
 
-    fetch("https://api.example.com/train", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(json),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Handle the API response data here
-        console.log("API response:", data);
-      })
-      .catch((error) => {
-        // Handle any errors that occurred during the API call
-        console.error("Error making API call:", error);
-      });
+    //   fetch("https://api.example.com/train", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(json),
+    //   })
+    //     .then((response) => {
+    //       if (!response.ok) {
+    //         throw new Error("Network response was not ok");
+    //       }
+    //       return response.json();
+    //     })
+    //     .then((data) => {
+    //       // Handle the API response data here
+    //       console.log("API response:", data);
+    //     })
+    //     .catch((error) => {
+    //       // Handle any errors that occurred during the API call
+    //       console.error("Error making API call:", error);
+    //     });
   };
 
   return (

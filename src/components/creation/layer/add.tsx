@@ -29,7 +29,8 @@ const AddLayerDialog: React.FC<AddLayerDialogProps> = ({
       layer_name: layerName,
       params: {
         in_features: Number(inFeatures),
-        out_features: outFeatures,
+        out_features:
+          layerType == "Flatten" ? Number(inFeatures) : Number(outFeatures),
         bias: bias,
       },
     };

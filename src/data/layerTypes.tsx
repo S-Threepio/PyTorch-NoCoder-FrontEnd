@@ -8,7 +8,7 @@ export const layerTypes = [
     label: "Flatten",
   },
   {
-    value: "Conv2D",
-    label: "Conv2D",
+    value: "Conv2d",
+    label: "Conv2d",
   },
 ];
